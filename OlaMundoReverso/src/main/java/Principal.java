@@ -1,12 +1,19 @@
 public class Principal {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
-    Thread teste = new Ola(1);
+        Ola teste = new Ola(1);
+        System.out.println("inicio");
+        teste.start();
 
-    teste.start();
+        try {
+            teste.join();
+        } catch (Exception e) {
+            System.out.println("não rolou");
 
+        }
+        System.out.println("final");
 
 
 
