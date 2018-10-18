@@ -125,15 +125,29 @@ public class Principal {
                     if (tab.jogadorDaVez && clicado.getText() == "" && tab.player1.getTipo()  != "Computador") {
                         tab.player1.jogar(x, y, tab);
                         refresh();
+                        if (tab.player2.getTipo() == "Computador") {
+
+                            pos11.doClick();
+
+                        }
 
                     } else if (tab.jogadorDaVez == false && clicado.getText() == "" && tab.player2.getTipo()  != "Computador"){
                         tab.player2.jogar(x, y, tab);
                         jogadorvez.setText(tab.player2.getNome());
                         refresh();
-                    } else if (tab.jogadorDaVez && clicado.getText() == "" && tab.player1.getTipo()  == "Computador") {
-                        //computador jogando
-                    } else if (tab.jogadorDaVez == false && clicado.getText() == "" && tab.player2.getTipo()  == "Computador") {
-                        //computador jogando
+                        if (tab.player1.getTipo() == "Computador") {
+
+
+                            pos11.doClick();
+                        }
+                    } else if (tab.jogadorDaVez && tab.player1.getTipo()  == "Computador") {
+                        tab.player1.jogar(0,0, tab);
+                        jogadorvez.setText(tab.player1.getNome());
+                        refresh();
+                    } else if (tab.jogadorDaVez == false  && tab.player2.getTipo()  == "Computador") {
+                        tab.player2.jogar(0,0,  tab);
+                        jogadorvez.setText(tab.player2.getNome());
+                        refresh();
                     }
                     if (tab.fimdoJogo() == 3) {
                         jogadorvez.setText(tab.vencedor(3));

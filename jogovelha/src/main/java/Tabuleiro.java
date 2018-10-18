@@ -114,6 +114,13 @@ public class Tabuleiro {
         return ret;
     }
 
+    public boolean isJogadorDaVez() {
+        return jogadorDaVez;
+    }
+
+    public void setJogadorDaVez(boolean jogadorDaVez) {
+        this.jogadorDaVez = jogadorDaVez;
+    }
 
     public int[][] getTabuleiro() {
         return tabuleiro;
