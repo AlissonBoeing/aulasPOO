@@ -1,4 +1,4 @@
-import javafx.scene.control.Tab;
+//import javafx.scene.control.Tab;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 public class Principal {
 
@@ -61,11 +62,41 @@ public class Principal {
             }
         }
 
+
+
+
         if (tab.jogadorDaVez) {
             jogadorvez.setText(tab.player1.getNome());
+            if (tab.player1.getTipo() == "Computador" && tab.fimdoJogo() == 0) {
+                tab.player1.jogar(5,5,tab);
+                refresh();
+            }
+
         } else {
             jogadorvez.setText(tab.player2.getNome());
+            if (tab.player2.getTipo() == "Computador" && tab.fimdoJogo() == 0) {
+                tab.player2.jogar(5,5,tab);
+                refresh();
+            }
+
         }
+
+        if (tab.fimdoJogo() == 3) {
+            jogadorvez.setText(tab.vencedor(3));
+        } else if (tab.fimdoJogo() == 30) {
+            jogadorvez.setText(tab.vencedor(30));
+        } else if (tab.fimdoJogo() == 50) {
+            jogadorvez.setText("DEU VELHA!!");
+        }
+
+
+
+
+        player1Points.setText(Integer.toString(tab.player1.getPlacar()));
+        player2Points.setText(Integer.toString(tab.player2.getPlacar()));
+
+
+
 
 
     }
@@ -90,18 +121,41 @@ public class Principal {
                 super.mouseClicked(e);
                     if (tipodeJogo.getSelectedIndex() == 0) {
                         tab = new Tabuleiro(2, 0);
-                        refresh();
                     } else if (tipodeJogo.getSelectedIndex() == 1) {
                         tab = new Tabuleiro(1, 1);
-                        refresh();
                     } else if (tipodeJogo.getSelectedIndex() == 2) {
                         tab = new Tabuleiro(0, 2);
-                        refresh();
                 }
+
                 player1Name.setText(tab.player1.getNome() + ": ");
                 player1Points.setText(Integer.toString(tab.player1.getPlacar()));
                 player2Name.setText(tab.player2.getNome() + ": ");
                 player2Points.setText(Integer.toString(tab.player2.getPlacar()));
+
+                if(tab.jogadorDaVez) {
+                    if(tab.player1.getTipo() == "Computador") {
+                        Random x = new Random();
+                        Random y = new Random();
+                        int w = x.nextInt(3);
+                        int z = y.nextInt(3);
+                        tab.player1.jogar(w,z,tab);
+                        refresh();
+                    } else {
+                        refresh();
+                    }
+                } else {
+                    if(tab.player2.getTipo() == "Computador") {
+                        Random h = new Random();
+                        Random g = new Random();
+                        int w = h.nextInt(3);
+                        int z = g.nextInt(3);
+                        tab.player2.jogar(w,z,tab);
+                        refresh();
+                    } else {
+                        refresh();
+                    }
+
+                }
 
 
             }
@@ -125,41 +179,13 @@ public class Principal {
                     if (tab.jogadorDaVez && clicado.getText() == "" && tab.player1.getTipo()  != "Computador") {
                         tab.player1.jogar(x, y, tab);
                         refresh();
-                        if (tab.player2.getTipo() == "Computador") {
-
-                            pos11.doClick();
-
-                        }
-
-                    } else if (tab.jogadorDaVez == false && clicado.getText() == "" && tab.player2.getTipo()  != "Computador"){
+                    } else if (!tab.jogadorDaVez && clicado.getText() == "" && tab.player2.getTipo()  != "Computador") {
                         tab.player2.jogar(x, y, tab);
                         jogadorvez.setText(tab.player2.getNome());
                         refresh();
-                        if (tab.player1.getTipo() == "Computador") {
-
-
-                            pos11.doClick();
-                        }
-                    } else if (tab.jogadorDaVez && tab.player1.getTipo()  == "Computador") {
-                        tab.player1.jogar(0,0, tab);
-                        jogadorvez.setText(tab.player1.getNome());
-                        refresh();
-                    } else if (tab.jogadorDaVez == false  && tab.player2.getTipo()  == "Computador") {
-                        tab.player2.jogar(0,0,  tab);
-                        jogadorvez.setText(tab.player2.getNome());
-                        refresh();
                     }
-                    if (tab.fimdoJogo() == 3) {
-                        jogadorvez.setText(tab.vencedor(3));
-                    } else if (tab.fimdoJogo() == 30) {
-                        jogadorvez.setText(tab.vencedor(30));
-                    }
-                    player1Points.setText(Integer.toString(tab.player1.getPlacar()));
-                    player2Points.setText(Integer.toString(tab.player2.getPlacar()));
+
                 }
-
-
-
             }
         };
 
@@ -188,7 +214,31 @@ public class Principal {
                 player1Points.setText(Integer.toString(tab.player1.getPlacar()));
                 player2Points.setText(Integer.toString(tab.player2.getPlacar()));
 
-                refresh();
+                if(tab.jogadorDaVez) {
+                    if(tab.player1.getTipo() == "Computador") {
+                        Random x = new Random();
+                        Random y = new Random();
+                        int w = x.nextInt(3);
+                        int z = y.nextInt(3);
+                        tab.player1.jogar(w,z,tab);
+                        refresh();
+                    } else {
+                        refresh();
+                    }
+                } else {
+                    if(tab.player2.getTipo() == "Computador") {
+                        Random h = new Random();
+                        Random g = new Random();
+                        int w = h.nextInt(3);
+                        int z = g.nextInt(3);
+                        tab.player2.jogar(w,z,tab);
+                        refresh();
+                    } else {
+                        refresh();
+                    }
+
+                }
+
             }
         });
     }

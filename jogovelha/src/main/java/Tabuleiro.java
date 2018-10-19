@@ -88,12 +88,21 @@ public class Tabuleiro {
                 }
             }
         }
+        int velha = 0;
+        for (i = 0; i < 3; i++) {
+            for (j = 0; j < 3; j++) {
+                velha = velha + this.tabuleiro[i][j];
+            }
+        }
+
         soma33 = this.tabuleiro[0][2] + this.tabuleiro[1][1] + this.tabuleiro[2][0];
 
         if (soma1 == 3 || soma2 == 3 || soma3 == 3 || soma33 == 3) {
             return 3;
         } else if (soma1 == 30 || soma2 == 30 || soma3 == 30 || soma33 == 30) {
             return 30;
+        } else if (velha == 45 || velha == 54){
+            return 50;
         } else {
             return 0;
         }

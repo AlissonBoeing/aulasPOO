@@ -32,14 +32,24 @@ public class Computador extends Jogador {
         int somadiagonal[] = new int[3];
         int comp = 0;
         int Marcador = 0;
+        int teste = 0;
 
+        if (x != 5 && y != 5) {
+            tab.marcarJogada(x,y);
+            return true;
+        }
+
+        System.out.println(x+ " " + y);;
         if(tab.isJogadorDaVez()) {
             Marcador = 1;
             comp = 20;
+            teste = 2;
         } else {
             Marcador = 10;
             comp = 2;
+            teste = 20;
         }
+
 
             for(int i =0; i<3;i++) {
                 for(int j =0; j<3; j++) {
@@ -54,28 +64,31 @@ public class Computador extends Jogador {
 
             for(int i = 0; i<3; i++) {
 
-                if(somalinhas[i] == comp) {
+                if(somalinhas[i] == comp || somalinhas[i] == teste ) {
                    for(int j =0; j<3; j++) {
                        if(tabu[i][j] == 0) {
-                           tabu[i][j] = Marcador;
+                           //tabu[i][j] = Marcador;
+                           tab.marcarJogada(i,j);
                             return true;
                        }
                    }
-                } else if (somacolunas[i] ==  comp) {
+                } else if (somacolunas[i] ==  comp || somacolunas[i] == teste) {
 
                     for(int j =0; j<3; j++) {
                         if(tabu[j][i] == 0) {
-                            tabu[j][i] = Marcador;
+                           // tabu[j][i] = Marcador;
+                            tab.marcarJogada(j,i);
                             return true;
                         }
                     }
 
-                } else if (somadiagonal[i] == comp) {
+                } else if (somadiagonal[i] == comp || somadiagonal[i] == teste) {
                     if(i == 0) {
                         int k = i;
                         for (int j=0; j < 3; j++) {
                                 if(tabu[k][j] == 0) {
-                                    tabu[k][j] = Marcador;
+                                    //tabu[k][j] = Marcador;
+                                    tab.marcarJogada(k,j);
                                     return true;
                                 }
                                 k++;
@@ -84,19 +97,27 @@ public class Computador extends Jogador {
                         int k = 2;
                         for (int j=0; j<3; j++) {
                             if(tabu[j][k] == 0) {
-                                tabu[j][k] = Marcador;
+                                //tabu[j][k] = Marcador;
+                                tab.marcarJogada(j,k);
                                 return true;
                             }
                             k--;
                         }
                     }
+                } else {
+                    for(int c = 0; c<3; c++) {
+                        for(int j=0; j<3; j++) {
+                            if(tabu[c][j] == 0) {
+                                //tabu[c][j] = Marcador;
+                                tab.marcarJogada(c,j);
+                                return true;
+                            }
+                        }
+                    }
+
                 }
             }
-
-
-
-
-    return true;
+    return false;
     }
 
 
