@@ -1,6 +1,7 @@
 //import javafx.scene.control.Tab;
 
 import javax.swing.*;
+import javax.swing.plaf.TableUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,13 +43,13 @@ public class Principal {
     private JLabel player2Name;
     private JLabel player1Points;
     private JLabel player2Points;
-    private Tabuleiro tab;
+    private JogoVelha game;
 
 
 
     public void refresh() {
 
-        int tabu[][] = tab.getTabuleiro();
+        int tabu[][] = JogoVelha.getTabuleiro().getMatriz();
 
         for(int i= 0;i<3;i++){
             for(int j=0;j<3;j++) {
@@ -62,42 +63,32 @@ public class Principal {
             }
         }
 
-
-
-
-        if (tab.jogadorDaVez) {
-            jogadorvez.setText(tab.player1.getNome());
-            if (tab.player1.getTipo() == "Computador" && tab.fimdoJogo() == 0) {
-                tab.player1.jogar(5,5,tab);
+        if (JogoVelha.isJogadorDaVez()) {
+            jogadorvez.setText(game.getPlayer1().getNome());
+            if (game.getPlayer1().getTipo() == "Computador" && JogoVelha.getTabuleiro().fimdoJogo() == 0) {
+                game.getPlayer1().jogar(5,5);
                 refresh();
             }
-
         } else {
-            jogadorvez.setText(tab.player2.getNome());
-            if (tab.player2.getTipo() == "Computador" && tab.fimdoJogo() == 0) {
-                tab.player2.jogar(5,5,tab);
+            jogadorvez.setText(game.getPlayer2().getNome());
+            if (game.getPlayer2().getTipo() == "Computador" && JogoVelha.getTabuleiro().fimdoJogo() == 0) {
+                game.getPlayer2().jogar(5,5);
                 refresh();
             }
 
         }
 
-        if (tab.fimdoJogo() == 3) {
-            jogadorvez.setText(tab.vencedor(3));
-        } else if (tab.fimdoJogo() == 30) {
-            jogadorvez.setText(tab.vencedor(30));
-        } else if (tab.fimdoJogo() == 50) {
+        if (JogoVelha.getTabuleiro().fimdoJogo() == 3) {
+            jogadorvez.setText(game.vencedor(3));
+        } else if (JogoVelha.getTabuleiro().fimdoJogo() == 30) {
+            jogadorvez.setText(game.vencedor(30));
+        } else if (JogoVelha.getTabuleiro().fimdoJogo() == 50) {
             jogadorvez.setText("DEU VELHA!!");
         }
 
 
-
-
-        player1Points.setText(Integer.toString(tab.player1.getPlacar()));
-        player2Points.setText(Integer.toString(tab.player2.getPlacar()));
-
-
-
-
+        player1Points.setText(Integer.toString(game.getPlayer1().getPlacar()));
+        player2Points.setText(Integer.toString(game.getPlayer2().getPlacar()));
 
     }
 
@@ -119,37 +110,31 @@ public class Principal {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                    if (tipodeJogo.getSelectedIndex() == 0) {
-                        tab = new Tabuleiro(2, 0);
-                    } else if (tipodeJogo.getSelectedIndex() == 1) {
-                        tab = new Tabuleiro(1, 1);
-                    } else if (tipodeJogo.getSelectedIndex() == 2) {
-                        tab = new Tabuleiro(0, 2);
-                }
 
-                player1Name.setText(tab.player1.getNome() + ": ");
-                player1Points.setText(Integer.toString(tab.player1.getPlacar()));
-                player2Name.setText(tab.player2.getNome() + ": ");
-                player2Points.setText(Integer.toString(tab.player2.getPlacar()));
+                game = new JogoVelha(tipodeJogo.getSelectedIndex());
 
-                if(tab.jogadorDaVez) {
-                    if(tab.player1.getTipo() == "Computador") {
+                player1Name.setText(game.getPlayer1().getNome() + ": ");
+                player1Points.setText(Integer.toString(game.getPlayer1().getPlacar()));
+                player2Name.setText(game.getPlayer2().getNome() + ": ");
+                player2Points.setText(Integer.toString(game.getPlayer2().getPlacar()));
+
+                if(JogoVelha.isJogadorDaVez()) {
+                    if(game.getPlayer1().getTipo() == "Computador") {
                         Random x = new Random();
-                        Random y = new Random();
                         int w = x.nextInt(3);
-                        int z = y.nextInt(3);
-                        tab.player1.jogar(w,z,tab);
+                        int z = x.nextInt(3);
+                        game.getPlayer1().jogar(w,z);
                         refresh();
                     } else {
                         refresh();
                     }
                 } else {
-                    if(tab.player2.getTipo() == "Computador") {
+                    if(game.getPlayer2().getTipo() == "Computador") {
                         Random h = new Random();
                         Random g = new Random();
                         int w = h.nextInt(3);
                         int z = g.nextInt(3);
-                        tab.player2.jogar(w,z,tab);
+                        game.getPlayer2().jogar(w,z);
                         refresh();
                     } else {
                         refresh();
@@ -166,7 +151,7 @@ public class Principal {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if(tab.fimdoJogo() == 0 ) {
+                if(JogoVelha.getTabuleiro().fimdoJogo() == 0 ) {
                 JButton clicado = ((JButton) e.getSource());
 
                 String nomeClicado = clicado.getName();
@@ -176,12 +161,11 @@ public class Principal {
                 int x = (num/10) -1 ;
                 int y = (num % 10) -1;
 
-                    if (tab.jogadorDaVez && clicado.getText() == "" && tab.player1.getTipo()  != "Computador") {
-                        tab.player1.jogar(x, y, tab);
+                    if (JogoVelha.isJogadorDaVez() && clicado.getText() == "" && game.getPlayer1().getTipo()  != "Computador") {
+                        game.getPlayer1().jogar(x, y);
                         refresh();
-                    } else if (!tab.jogadorDaVez && clicado.getText() == "" && tab.player2.getTipo()  != "Computador") {
-                        tab.player2.jogar(x, y, tab);
-                        jogadorvez.setText(tab.player2.getNome());
+                    } else if (!JogoVelha.isJogadorDaVez() && clicado.getText() == "" && game.getPlayer2().getTipo()  != "Computador") {
+                        game.getPlayer2().jogar(x, y);
                         refresh();
                     }
 
@@ -204,40 +188,10 @@ public class Principal {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                int tabul[][] = new int[3][3];
-                for(int i = 0; i< 3; i++) {
-                    for(int j = 0; j<3 ; j++) {
-                        tabul[i][j] = 0;
-                    }
-                }
-                tab.setTabuleiro(tabul);
-                player1Points.setText(Integer.toString(tab.player1.getPlacar()));
-                player2Points.setText(Integer.toString(tab.player2.getPlacar()));
 
-                if(tab.jogadorDaVez) {
-                    if(tab.player1.getTipo() == "Computador") {
-                        Random x = new Random();
-                        Random y = new Random();
-                        int w = x.nextInt(3);
-                        int z = y.nextInt(3);
-                        tab.player1.jogar(w,z,tab);
-                        refresh();
-                    } else {
-                        refresh();
-                    }
-                } else {
-                    if(tab.player2.getTipo() == "Computador") {
-                        Random h = new Random();
-                        Random g = new Random();
-                        int w = h.nextInt(3);
-                        int z = g.nextInt(3);
-                        tab.player2.jogar(w,z,tab);
-                        refresh();
-                    } else {
-                        refresh();
-                    }
+                game.jogarNovamente();
 
-                }
+                refresh();
 
             }
         });

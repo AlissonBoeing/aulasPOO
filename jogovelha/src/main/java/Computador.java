@@ -1,19 +1,13 @@
+import javax.print.attribute.standard.JobOriginatingUserName;
+
 public class Computador extends Jogador {
 
-    private int placar;
-    private String marcador;
-    private String nome;
-    private String tipo;
-
-    public Computador() {
-
-    }
 
     public Computador(int i) {
 
         placar = 0;
 
-        if (i == 1){
+        if (i == 1) {
             marcador = "X";
         } else {
             marcador = "O";
@@ -23,141 +17,191 @@ public class Computador extends Jogador {
 
     }
 
-    @Override
-    public boolean jogar(int x, int y, Tabuleiro tab) {
 
-        int tabu[][] = tab.getTabuleiro();
-        int somalinhas[] = new int[3];
-        int somacolunas[] = new int[3];
-        int somadiagonal[] = new int[3];
-        int comp = 0;
-        int Marcador = 0;
-        int teste = 0;
+    public int possoperderL() {
 
-        if (x != 5 && y != 5) {
-            tab.marcarJogada(x,y);
-            return true;
-        }
+        int eu, adv, soma0 = 0, soma1 = 0, soma2 = 0;
+        int tabu[][] = JogoVelha.getTabuleiro().getMatriz();
 
-        System.out.println(x+ " " + y);;
-        if(tab.isJogadorDaVez()) {
-            Marcador = 1;
-            comp = 20;
-            teste = 2;
+        if (JogoVelha.isJogadorDaVez()) {
+            eu = 1;
+            adv = 20;
         } else {
-            Marcador = 10;
-            comp = 2;
-            teste = 20;
+            eu = 10;
+            adv = 2;
         }
 
 
-            for(int i =0; i<3;i++) {
-                for(int j =0; j<3; j++) {
-                    somalinhas[i] =  somalinhas[i] + tabu[i][j];
-                    somacolunas[j] = somacolunas[j] + tabu[i][j];
-                }
-            }
+        for (int j = 0; j < 3; j++) {
+            soma0 = soma0 + tabu[0][j];
+            soma1 = soma1 + tabu[1][j];
+            soma2 = soma2 + tabu[2][j];
+        }
 
-            somadiagonal[0] = tabu[0][0] + tabu[1][1] + tabu[2][2];
-            somadiagonal[1] = tabu[0][2] + tabu[1][1] + tabu[2][0];
-            somadiagonal[2] = 0;
+        if (soma0 == adv) {
+            return 0;
+        } else if (soma1 == adv) {
+            return 1;
+        } else if (soma2 == adv) {
+            return 2;
+        } else {
+            return 3;
+        }
 
-            for(int i = 0; i<3; i++) {
+    }
 
-                if(somalinhas[i] == comp || somalinhas[i] == teste ) {
-                   for(int j =0; j<3; j++) {
-                       if(tabu[i][j] == 0) {
-                           //tabu[i][j] = Marcador;
-                           tab.marcarJogada(i,j);
-                            return true;
-                       }
-                   }
-                } else if (somacolunas[i] ==  comp || somacolunas[i] == teste) {
+    public int possoperderC() {
 
-                    for(int j =0; j<3; j++) {
-                        if(tabu[j][i] == 0) {
-                           // tabu[j][i] = Marcador;
-                            tab.marcarJogada(j,i);
-                            return true;
-                        }
+        int eu, adv, soma0 = 0, soma1 = 0, soma2 = 0;
+        int tabu[][] = JogoVelha.getTabuleiro().getMatriz();
+
+
+        if (JogoVelha.isJogadorDaVez()) {
+            adv = 20;
+        } else {
+            adv = 2;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            soma0 = soma0 + tabu[i][0];
+            soma1 = soma1 + tabu[i][1];
+            soma2 = soma2 + tabu[i][2];
+        }
+
+        if (soma0 == adv) {
+            return 0;
+        } else if (soma1 == adv) {
+            return 1;
+        } else if (soma2 == adv) {
+            return 2;
+        } else {
+            return 3;
+        }
+
+    }
+
+    public int possoperderD() {
+
+        int eu, adv, soma0 = 0, soma1 = 0, soma2 = 0;
+        int tabu[][] = JogoVelha.getTabuleiro().getMatriz();
+
+        if (JogoVelha.isJogadorDaVez()) {
+            eu = 1;
+            adv = 20;
+        } else {
+            eu = 10;
+            adv = 2;
+        }
+
+
+        soma0 = tabu[0][0] + tabu[1][1] + tabu[2][2];
+        soma1 = tabu[0][2] + tabu[1][1] + tabu[2][0];
+
+        if (soma0 == adv) {
+            return 0;
+        } else if (soma1 == adv) {
+            return 1;
+        } else {
+            return 3;
+        }
+
+    }
+    public boolean naoPerder(int q, int num) { //q = linha coluna ou diagonal, num = numero da linha ou coluna ou diagonal
+        int tabu[][] = JogoVelha.getTabuleiro().getMatriz();
+        switch (q) {
+            case 0:
+                for (int j = 0; j < 3; j++) {
+                    if (tabu[num][j] == 0) {
+                        JogoVelha.getTabuleiro().marcarJogada(num, j);
+                        return true;
                     }
-
-                } else if (somadiagonal[i] == comp || somadiagonal[i] == teste) {
-                    if(i == 0) {
-                        int k = i;
-                        for (int j=0; j < 3; j++) {
-                                if(tabu[k][j] == 0) {
-                                    //tabu[k][j] = Marcador;
-                                    tab.marcarJogada(k,j);
-                                    return true;
-                                }
-                                k++;
-                        }
-                    } else if (i == 1) {
-                        int k = 2;
-                        for (int j=0; j<3; j++) {
-                            if(tabu[j][k] == 0) {
-                                //tabu[j][k] = Marcador;
-                                tab.marcarJogada(j,k);
+                }
+            case 1:
+                for (int i = 0; i < 3; i++) {
+                    if (tabu[i][num] == 0) {
+                        JogoVelha.getTabuleiro().marcarJogada(i, num);
+                        return true;
+                    }
+                }
+            case 2:
+                if (num == 0) {
+                    for (int i = 0; i < 3; i++) {
+                        for (int j = 0; j < 3; j++) {
+                            if (tabu[i][j] == 0) {
+                                JogoVelha.getTabuleiro().marcarJogada(i, j);
                                 return true;
                             }
-                            k--;
                         }
                     }
                 } else {
-                    for(int c = 0; c<3; c++) {
-                        for(int j=0; j<3; j++) {
-                            if(tabu[c][j] == 0) {
-                                //tabu[c][j] = Marcador;
-                                tab.marcarJogada(c,j);
-                                return true;
-                            }
-                        }
-                    }
-
+                    if(tabu[0][2] == 0) { JogoVelha.getTabuleiro().marcarJogada(0, 2); return true; }
+                    if (tabu[1][1] == 0) {JogoVelha.getTabuleiro().marcarJogada(1, 1); return true; }
+                    if (tabu[2][0] == 0) {JogoVelha.getTabuleiro().marcarJogada(2, 0); return true; }
                 }
+
+
+        }
+
+        return true;
+        }
+
+
+   // public boolean planejarVitoria() {
+
+    //}
+
+    @Override
+    public boolean jogar(int x, int y) {
+
+
+
+
+        if(possoperderC() == 3 && possoperderD() == 3 && possoperderL() == 3) { // planejar vitoria
+            JogoVelha.getTabuleiro().marcarJogada(1, 1);
+            return true;
+
+        } else if (possoperderL() != 3){ // nao perder
+            switch (possoperderL()) {
+                case 0:
+                    this.naoPerder(0, 0);
+                    return true;
+                case 1:
+                    this.naoPerder(0, 1);
+                    return true;
+                case 2:
+                    this.naoPerder(0, 2);
+                    return true;
             }
-    return false;
-    }
+            } else if(possoperderC() != 3) {
+            switch(possoperderC()) {
+                case 0:
+                    this.naoPerder(1, 0);
+                    return true;
+                case 1:
+                    this.naoPerder(1, 1);
+                    return true;
+                case 2:
+                    this.naoPerder(1, 2);
+                    return true;
+            }
+        } else if(possoperderD() != 3){
+            switch(possoperderD()) {
+                case 0:
+                    this.naoPerder(2, 0);
+                    return true;
+                case 1:
+                    this.naoPerder(2, 1);
+                    return true;
+            }
+        }
 
 
-    @Override
-    public int getPlacar() {
-        return placar;
+
+        return false;
+
     }
 
-    @Override
-    public void setPlacar(int placar) {
-        this.placar = placar;
-    }
-
-    @Override
-    public String getMarcador() {
-        return marcador;
-    }
-
-    @Override
-    public void setMarcador(String marcador) {
-        this.marcador = marcador;
-    }
-
-    @Override
-    public String getNome() {
-        return nome;
-    }
-
-    @Override
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    @Override
-    public String getTipo() {
-        return tipo;
-    }
-
-    @Override
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
 }
+
+
+

@@ -273,7 +273,7 @@
                 <properties>
                   <horizontalAlignment value="0"/>
                   <horizontalTextPosition value="0"/>
-                  <text value="Jogador da vez:"/>
+                  <text value="Humano da vez:"/>
                 </properties>
               </component>
               <component id="77d70" class="javax.swing.JLabel" binding="jogadorvez">

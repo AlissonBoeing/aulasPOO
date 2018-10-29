@@ -1,35 +1,11 @@
-public class Jogador {
+public abstract class Jogador {
 
-    private int placar;
-    private String marcador;
-    private String nome;
-    private String tipo;
+    protected int placar;
+    protected String marcador;
+    protected String nome;
+    protected String tipo;
 
-    public Jogador() {
-
-    }
-
-    public Jogador(int i) {
-
-        placar = 0;
-
-        if (i == 1){
-            marcador = "X";
-        } else {
-            marcador = "O";
-        }
-
-        tipo = "Jogador";
-
-        nome = "Jogador " + marcador;
-    }
-
-    public boolean jogar(int x, int y, Tabuleiro tab) {
-
-        tab.marcarJogada(x,y);
-        return true;
-
-    }
+    public abstract boolean jogar(int x, int y); //JogoVelha.getTabuleiro().marcarJogada(int x, int y)
 
     public int getPlacar() {
         return placar;
@@ -63,3 +39,5 @@ public class Jogador {
         this.tipo = tipo;
     }
 }
+
+

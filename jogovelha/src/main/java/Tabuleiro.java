@@ -1,58 +1,33 @@
-import java.util.Arrays;
+import javax.print.attribute.standard.JobOriginatingUserName;
 import java.util.Random;
 
 public class Tabuleiro {
 
-    private int[][] tabuleiro;
-    Jogador player1;
-    Jogador player2;
-    boolean jogadorDaVez;
+    private int[][] matriz;
 
 
-    public Tabuleiro(int jog, int comp) {
+    public Tabuleiro() {
 
-
-        tabuleiro = new int[3][3];
-        for(int i = 0; i< 3; i++) {
-            for(int j = 0; j<3 ; j++) {
-                tabuleiro[i][j] = 0;
+        matriz = new int[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                matriz[i][j] = 0;
             }
         }
 
-
-        if (comp == jog) {
-             player1 = new Jogador(1);
-             player2 = new Computador(2);
-        } else  if (jog == 2){
-             player1 = new Jogador(1);
-             player2 = new Jogador(2);
-        } else if (comp == 2) {
-             player1 = new Computador(1);
-             player2 = new Computador(2);
-        }
-
-        Random a = new Random();
-        int b = a.nextInt(20);
-        if (b < 10){
-            jogadorDaVez = true;
-        } else {
-            jogadorDaVez = false;
-        }
     }
 
     public boolean marcarJogada(int x, int y){
 
-        if (this.jogadorDaVez){
-            this.tabuleiro[x][y] = 1;
-            jogadorDaVez = false;
+        if (JogoVelha.isJogadorDaVez()){
+            this.matriz[x][y] = 1;
+            JogoVelha.setJogadorDaVez(false);
             return true;
         } else {
-            this.tabuleiro[x][y] = 10;
-            jogadorDaVez = true;
+            this.matriz[x][y] = 10;
+            JogoVelha.setJogadorDaVez(true);
             return true;
         }
-
-
 
     }
 
@@ -61,7 +36,7 @@ public class Tabuleiro {
         int i, j, soma1 = 0, soma2 = 0, soma3 = 0, soma33 = 0;
         for (i = 0; i < 3; i++) {
             for (j = 0; j < 3; j++) {
-                soma1 = soma1 + this.tabuleiro[i][j];
+                soma1 = soma1 + this.matriz[i][j];
             }
             if (soma1 == 3 || soma1 == 30) {
                 break;
@@ -72,7 +47,7 @@ public class Tabuleiro {
 
         for (i = 0; i < 3; i++) {
             for (j = 0; j < 3; j++) {
-                soma2 = soma2 + this.tabuleiro[j][i];
+                soma2 = soma2 + this.matriz[j][i];
             }
             if (soma2 == 3 || soma2 == 30) {
                 break;
@@ -84,18 +59,18 @@ public class Tabuleiro {
         for (i = 0; i < 3; i++) {
             for (j = 0; j < 3; j++) {
                 if (i == j) {
-                    soma3 = soma3 + this.tabuleiro[i][j];
+                    soma3 = soma3 + this.matriz[i][j];
                 }
             }
         }
         int velha = 0;
         for (i = 0; i < 3; i++) {
             for (j = 0; j < 3; j++) {
-                velha = velha + this.tabuleiro[i][j];
+                velha = velha + this.matriz[i][j];
             }
         }
 
-        soma33 = this.tabuleiro[0][2] + this.tabuleiro[1][1] + this.tabuleiro[2][0];
+        soma33 = this.matriz[0][2] + this.matriz[1][1] + this.matriz[2][0];
 
         if (soma1 == 3 || soma2 == 3 || soma3 == 3 || soma33 == 3) {
             return 3;
@@ -110,32 +85,12 @@ public class Tabuleiro {
 
     }
 
-    public String vencedor(int soma) {
-
-        String ret = "";
-        if(soma == 3) {
-            ret = this.player1.getNome() + " Venceu!!";
-            this.player1.setPlacar(this.player1.getPlacar() + 1);
-        } else if(soma == 30) {
-            ret = this.player2.getNome() + " Venceu!!";
-            this.player2.setPlacar(this.player2.getPlacar() + 1);
-        }
-        return ret;
+    public int[][] getMatriz() {
+        return matriz;
     }
 
-    public boolean isJogadorDaVez() {
-        return jogadorDaVez;
+    public void setMatriz(int[][] tabuleiro) {
+        this.matriz = tabuleiro;
     }
 
-    public void setJogadorDaVez(boolean jogadorDaVez) {
-        this.jogadorDaVez = jogadorDaVez;
-    }
-
-    public int[][] getTabuleiro() {
-        return tabuleiro;
-    }
-
-    public void setTabuleiro(int[][] tabuleiro) {
-        this.tabuleiro = tabuleiro;
-    }
 }
